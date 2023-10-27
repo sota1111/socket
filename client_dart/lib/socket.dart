@@ -1,15 +1,8 @@
 import 'dart:io';
 import 'dart:async';
-//import 'dart:convert' show utf8;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:intl/intl.dart';
-//import 'package:android_intent/android_intent.dart';
-
-//import '../common/common_imports.dart';
-//import '../viewmodel/view_provider.dart';
+import 'socket_log.dart';
 
 const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 
@@ -172,45 +165,5 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
       _timer!.cancel();
       _timer = null;
     }
-  }
-}
-
-final logManagerProvider = Provider<LogManager>((ref) {
-  return LogManager();
-});
-class LogManager {
-  File? logFile;
-
-  Future<void> initLogFile() async {
-    logFile = await _createLogFile();
-  }
-
-  Future<File> _createLogFile() async {
-    final directory = await getExternalStorageDirectory();
-    if (directory == null) {
-      throw Exception('External storage directory not found');
-    }
-    final logDirectory = Directory('${directory.path}/SocketLog/logs');
-    if (!await logDirectory.exists()) {
-      await logDirectory.create(recursive: true);
-    }
-
-    final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    final logFile = File('${logDirectory.path}/app_$timestamp.log');
-
-    if (!await logFile.exists()) {
-      await logFile.create(recursive: true);
-    }
-    return logFile;
-  }
-
-  Future<void> logToFile(String message) async {
-    if (logFile == null) {
-      debugPrint('LogFile not initialized');
-      return;
-    }
-    final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.now());
-    final logLine = '$timestamp - $message\n';
-    await logFile!.writeAsString(logLine, mode: FileMode.append, flush: true);
   }
 }

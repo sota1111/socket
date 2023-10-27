@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'socket.dart';
+import 'socket_log.dart';
 
 const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 

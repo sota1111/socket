@@ -7,9 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'socket_log.dart';
 import 'socket_config.dart';
 
-const env = String.fromEnvironment('ENV', defaultValue: 'dev');
-const portController = '55001';
-
 final socketComProvider = StateNotifierProvider<SocketCom, void>((ref) {
   return SocketCom.instance;
 });

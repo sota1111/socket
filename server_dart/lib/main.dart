@@ -53,7 +53,7 @@ class SocketServerPageState extends State<SocketServerPage> {
     client.listen((List<int> data) {
       if (data.isNotEmpty) {
         var decodedData = utf8.decode(data);
-        var response = 'Rsp_$decodedData';
+        var response = 'Rsp';
         debugPrint(response);
         final responseData = utf8.encode(response);
         client.add(responseData);

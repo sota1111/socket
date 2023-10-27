@@ -8,7 +8,12 @@ const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initLogFile();
+  // LogManager インスタンスを作成してログファイルを初期化
+  final logManager = LogManager();
+  await logManager.initLogFile();
+
+  // LogManager インスタンスを SocketCom にセット
+  SocketCom.instance.logManager = logManager;
   runApp(
     const ProviderScope(
       child: MyApp(),

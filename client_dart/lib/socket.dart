@@ -13,16 +13,19 @@ import 'package:intl/intl.dart';
 
 const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 
+final socketComProvider = StateNotifierProvider<SocketCom, void>((ref) {
+  return SocketCom.instance;
+});
 class SocketCom extends StateNotifier {
-  SocketCom._() : super(null);
-  static final SocketCom _instance = SocketCom._();
+  LogManager? logManager;
+  SocketCom._(this.logManager) : super(null);
+  static final SocketCom _instance = SocketCom._(null);
 
   static SocketCom get instance => _instance;
   final _portController = '55001';
   Socket? socket;
   bool compInitComm = false;
 
-  // コールバック関数を追加
   void _onDataReceived() {
   }
 
@@ -36,7 +39,7 @@ class SocketCom extends StateNotifier {
       socket = await Socket.connect(serverAddress, serverPort,
           timeout: const Duration(seconds: 5));
       debugPrint('socket connected');
-      logToFile('socket connected');
+      logManager?.logToFile('socket connected');
       socket!.listen(
             (data) => _onDataReceived(),
         onDone: () {
@@ -45,7 +48,7 @@ class SocketCom extends StateNotifier {
       );
     } catch (e) {
       debugPrint('Connection Error: $e');
-      logToFile('Connection Error: $e');
+      logManager?.logToFile('Connection Error: $e');
       //await _displayInstructions(context);
     }
   }
@@ -89,10 +92,10 @@ class SocketCom extends StateNotifier {
     final socket = this.socket;
     if (socket == null) {
       debugPrint('Socket is not connected.');
-      logToFile('Socket is not connected.');
+      logManager?.logToFile('Socket is not connected.');
       return;
     }
-    logToFile('Send Message: $message');
+    logManager?.logToFile('Send Message: $message');
     debugPrint('Send Message: $message');
     socket.write(message);
   }
@@ -102,14 +105,10 @@ class SocketCom extends StateNotifier {
     if (socket != null) {
       await socket.close();
       debugPrint("Socket closed.");
-      logToFile('Socket closed.');
+      logManager?.logToFile('Socket closed.');
     }
   }
 }
-
-final socketComProvider = StateNotifierProvider<SocketCom, void>((ref) {
-  return SocketCom.instance;
-});
 
 class SocketWidget extends ConsumerStatefulWidget {
   const SocketWidget({super.key});
@@ -148,7 +147,6 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
 
   Future<void> timerAction() async {
     final socketCom = this.socketCom;
-    //print("socketCom.compInitComm:${socketCom.compInitComm}");
     if( (socketCom.socket != null) && (socketCom.compInitComm == true)) {
       socketCom.socketSend('send_message');
     } else {
@@ -171,47 +169,48 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
   // タイマを停止するメソッド
   void stopTimer() {
     if (_timer != null) {
-      _timer!.cancel(); // null許容型のため、'!'でnullチェックを行います。
+      _timer!.cancel();
       _timer = null;
     }
   }
 }
 
-File? logFile;
+final logManagerProvider = Provider<LogManager>((ref) {
+  return LogManager();
+});
+class LogManager {
+  File? logFile;
 
-Future<void> initLogFile() async {
-  logFile = await _createLogFile();
-}
-
-Future<File> _createLogFile() async {
-  final directory = await getExternalStorageDirectory();
-  if (directory == null) {
-    throw Exception('External storage directory not found');
-  }
-  final logDirectory = Directory('${directory.path}/YourAppName/logs');
-  if (!await logDirectory.exists()) {
-    await logDirectory.create(recursive: true);
+  Future<void> initLogFile() async {
+    logFile = await _createLogFile();
   }
 
-  final timestamp = DateFormat('yyyyMMdd_HHmm ss').format(DateTime.now());
-  final logFile = File('${logDirectory.path}/app_$timestamp.log');
+  Future<File> _createLogFile() async {
+    final directory = await getExternalStorageDirectory();
+    if (directory == null) {
+      throw Exception('External storage directory not found');
+    }
+    final logDirectory = Directory('${directory.path}/SocketLog/logs');
+    if (!await logDirectory.exists()) {
+      await logDirectory.create(recursive: true);
+    }
 
-  if (!await logFile.exists()) {
-    await logFile.create(recursive: true);
+    final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+    final logFile = File('${logDirectory.path}/app_$timestamp.log');
+
+    if (!await logFile.exists()) {
+      await logFile.create(recursive: true);
+    }
+    return logFile;
   }
 
-  return logFile;
-}
-
-Future<void> logToFile(String message) async {
-  if (logFile == null) {
-    debugPrint('LogFile not initialized');
-    return;
+  Future<void> logToFile(String message) async {
+    if (logFile == null) {
+      debugPrint('LogFile not initialized');
+      return;
+    }
+    final timestamp = DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.now());
+    final logLine = '$timestamp - $message\n';
+    await logFile!.writeAsString(logLine, mode: FileMode.append, flush: true);
   }
-  final timestamp =
-      DateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(DateTime.now());
-  final logLine = '$timestamp - $message\n';
-
-  await logFile!.writeAsString(logLine, mode: FileMode.append, flush: true);
-  //print('Logged to file: ${file.path}');
 }

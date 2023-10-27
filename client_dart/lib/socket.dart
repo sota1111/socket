@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'socket_log.dart';
+import 'socket_config.dart';
 
 const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 const portController = '55001';
@@ -23,12 +24,11 @@ class SocketCom extends StateNotifier {
   bool dialogIsShown = false;
 
   Future<void> socketConnect() async {
-    const addressController = (env == 'dev') ? '127.0.0.1':'192.168.42.100';
-    final serverAddress = InternetAddress(addressController);
-    final serverPort = int.parse(portController);
+    final serverAddress = InternetAddress(socketConfig.address);
+    final serverPort = socketConfig.port;
 
     try {
-      socket = await Socket.connect(serverAddress, serverPort, timeout: const Duration(seconds: 5));
+      socket = await Socket.connect(serverAddress, serverPort, timeout: Duration(milliseconds: socketConfig.connectionTimeout));
       debugPrint('socket connected');
       logManager?.logToFile('socket connected');
       socket!.listen((data) => _onDataReceived(),
@@ -91,9 +91,9 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
   }
 
   void startSending(SocketCom socketCom) {
-    Future.delayed(const Duration(seconds: 1), () async {
+    Future.delayed(Duration(milliseconds: socketConfig.waitTimeBeforeConnecting), () async {
       await socketCom.socketConnect();
-      Future.delayed(const Duration(seconds: 5), () async {
+      Future.delayed(Duration(milliseconds: socketConfig.waitTimeAfterConnecting), () async {
         socketCom.compInitComm = true;
         startTimer();
       });
@@ -107,7 +107,7 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
     } else {
       stopTimer();
       await socketCom.socketConnect();
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(Duration(milliseconds: socketConfig.retryInterval));
       debugPrint('retry connection');
       startTimer();
     }
@@ -116,7 +116,7 @@ class SocketWidgetState extends ConsumerState<SocketWidget> {
   // タイマを再開するメソッド
   void startTimer() {
     _timer ??= Timer.periodic(
-        const Duration(milliseconds: 1000), (timer) => timerAction());
+        Duration(milliseconds: socketConfig.sendInterval), (timer) => timerAction());
   }
 
   // タイマを停止するメソッド

@@ -5,17 +5,17 @@ import 'com.dart';
 class SendArea extends ConsumerWidget {
   SendArea({super.key});
 
-  final TextEditingController statusKeyController = TextEditingController(text: 'key0');
-  final TextEditingController statusValueController = TextEditingController(text: 'value0');
+  final TextEditingController keyController0 = TextEditingController(text: 'key0');
+  final TextEditingController valueController0 = TextEditingController(text: 'value0');
 
-  final TextEditingController greetingKeyController = TextEditingController(text: 'key2');
-  final TextEditingController greetingValueController = TextEditingController(text: 'value2');
+  final TextEditingController keyController1 = TextEditingController(text: 'key1');
+  final TextEditingController valueController1 = TextEditingController(text: 'value1');
 
-  final TextEditingController inquiryKeyController = TextEditingController(text: 'key2');
-  final TextEditingController inquiryValueController = TextEditingController(text: 'value2');
+  final TextEditingController keyController2 = TextEditingController(text: 'key2');
+  final TextEditingController valueController2 = TextEditingController(text: 'value2');
 
-  final TextEditingController additionalInfoKeyController = TextEditingController(text: 'key3');
-  final TextEditingController additionalInfoValueController = TextEditingController(text: 'value3');
+  final TextEditingController keyController3 = TextEditingController(text: 'key3');
+  final TextEditingController valueController3 = TextEditingController(text: 'value3');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,13 +27,13 @@ class SendArea extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                controller: statusKeyController,
+                controller: keyController0,
                 decoration: InputDecoration(labelText: "key0"),
               ),
             ),
             Expanded(
               child: TextField(
-                controller: statusValueController,
+                controller: valueController0,
                 decoration: InputDecoration(labelText: "value0"),
               ),
             ),
@@ -43,13 +43,13 @@ class SendArea extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                controller: greetingKeyController,
+                controller: keyController1,
                 decoration: InputDecoration(labelText: "key1"),
               ),
             ),
             Expanded(
               child: TextField(
-                controller: greetingValueController,
+                controller: valueController1,
                 decoration: InputDecoration(labelText: "value1"),
               ),
             ),
@@ -59,13 +59,13 @@ class SendArea extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                controller: inquiryKeyController,
+                controller: keyController2,
                 decoration: InputDecoration(labelText: "key2"),
               ),
             ),
             Expanded(
               child: TextField(
-                controller: inquiryValueController,
+                controller: valueController2,
                 decoration: InputDecoration(labelText: "value2"),
               ),
             ),
@@ -75,13 +75,13 @@ class SendArea extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                controller: additionalInfoKeyController,
+                controller: keyController3,
                 decoration: InputDecoration(labelText: "key3"),
               ),
             ),
             Expanded(
               child: TextField(
-                controller: additionalInfoValueController,
+                controller: valueController3,
                 decoration: InputDecoration(labelText: "value3"),
               ),
             ),
@@ -89,17 +89,17 @@ class SendArea extends ConsumerWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            String statusKey = statusKeyController.text;
-            String statusValue = statusValueController.text;
+            String statusKey = keyController0.text;
+            String statusValue = valueController0.text;
 
-            String greetingKey = greetingKeyController.text;
-            String greetingValue = greetingValueController.text;
+            String greetingKey = keyController1.text;
+            String greetingValue = valueController1.text;
 
-            String inquiryKey = inquiryKeyController.text;
-            String inquiryValue = inquiryValueController.text;
+            String inquiryKey = keyController2.text;
+            String inquiryValue = valueController2.text;
 
-            String additionalInfoKey = additionalInfoKeyController.text;
-            String additionalInfoValue = additionalInfoValueController.text;
+            String additionalInfoKey = keyController3.text;
+            String additionalInfoValue = valueController3.text;
 
             Map<String, dynamic> newMessage = {
               statusKey: statusValue,

@@ -63,7 +63,7 @@ class SocketServerPageState extends State<SocketServerPage> {
           return;
         }
 
-        //debugPrint("受信したJSON: $receivedJson");
+        debugPrint("受信したJSON: $receivedJson");
 
         var responseMap = {
           'status': 'success',

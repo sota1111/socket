@@ -52,9 +52,9 @@ class SocketCom extends StateNotifier {
       logManager?.logToFile('Socket is not connected.');
       return;
     }
-    logManager?.logToFile('Send Message: $jsonMessage');
-    debugPrint('Send Message: $jsonMessage');
     socket.write(jsonMessage);
+    debugPrint('Send Message: $jsonMessage');
+    logManager?.logToFile('Send Message: $jsonMessage');
   }
 
   void setMessage(Map<String, dynamic> newMessage) {
@@ -66,11 +66,13 @@ class SocketCom extends StateNotifier {
     try {
       var jsonResponse = jsonDecode(response);
       debugPrint("Received JSON data: $jsonResponse");
+      logManager?.logToFile('Received Message: $jsonResponse');
 
       // receivedDataを更新
       ref.read(socketDataProvider.notifier).updateReceivedData(jsonResponse);
     } catch (e) {
       debugPrint("The received data is not in JSON format: $e");
+      logManager?.logToFile('Error Message: $e');
     }
   }
 

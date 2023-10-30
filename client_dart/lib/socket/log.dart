@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
-
 import 'package:intl/intl.dart';
+import 'package:path/path.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,24 +17,35 @@ class LogManager {
   }
 
   Future<File> _createLogFile() async {
-    //ディレクトリ設定
-    final directory = await getExternalStorageDirectory();//todo:Linuxの内部ディレクトリに変更する必要あり
-    if (directory == null) {
-      throw Exception('External storage directory not found');
+    // プラットフォーム判定
+    String logDirPath;
+    if (Platform.isLinux) {
+      logDirPath = join(Platform.environment['HOME'] ?? '', 'socketLog');
+    } else {
+      // 他のプラットフォーム用のディレクトリ取得処理
+      final directory = await getExternalStorageDirectory();
+      if (directory == null) {
+        throw Exception('External storage directory not found');
+      }
+      logDirPath = '${directory.path}/SocketLog/logs';
     }
-    final logDirectory = Directory('${directory.path}/SocketLog/logs');
+
+    // ディレクトリ設定
+    final logDirectory = Directory(logDirPath);
     if (!await logDirectory.exists()) {
       await logDirectory.create(recursive: true);
     }
 
-    //ファイル名設定
+    // ファイル名設定
     final timestamp = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
     final logFile = File('${logDirectory.path}/socketLog_$timestamp.log');
     if (!await logFile.exists()) {
       await logFile.create(recursive: true);
     }
+
     return logFile;
   }
+
 
   Future<void> logToFile(String message) async {
     if (logFile == null) {

@@ -53,9 +53,31 @@ class SocketServerPageState extends State<SocketServerPage> {
     client.listen((List<int> data) {
       if (data.isNotEmpty) {
         var decodedData = utf8.decode(data);
-        var response = 'Rsp';
-        debugPrint(response);
-        final responseData = utf8.encode(response);
+        Map<String, dynamic> receivedJson;
+
+        try {
+          receivedJson = jsonDecode(decodedData); // 文字列をJSONに変換
+        } catch (e) {
+          debugPrint("JSONのデコードに失敗しました: $e");
+          client.close();
+          return;
+        }
+
+        //debugPrint("受信したJSON: $receivedJson");
+
+        var responseMap = {
+          'status': 'success',
+          'message': {
+            'greeting': 'Hello, Client!',
+            'inquiry': 'How are you?',
+            'additionalInfo': 'This is another message.',
+          }
+        };
+
+        var jsonResponse = jsonEncode(responseMap); // MapをJSON形式にエンコード
+        //debugPrint("Sending JSON: $jsonResponse");
+
+        final responseData = utf8.encode(jsonResponse);
         client.add(responseData);
       } else {
         client.close();
@@ -68,6 +90,7 @@ class SocketServerPageState extends State<SocketServerPage> {
       client.close();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

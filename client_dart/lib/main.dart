@@ -1,9 +1,11 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'socket.dart';
-import 'socket_log.dart';
+
+import 'socket/com.dart';
+import 'socket/log.dart';
+
+import 'socket/sender.dart';
+import 'socket/receiver.dart';
 
 const env = String.fromEnvironment('ENV', defaultValue: 'dev');
 
@@ -21,24 +23,24 @@ void main() async {
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       home: ProviderScope(
         child: Scaffold(
-          backgroundColor: Colors.blue,
-          appBar: null,
+          backgroundColor: Colors.white,
+          appBar: AppBar(title: const Text('Socket Send App')),
           body: Column(
             children: [
-              SocketWidget(),
-              //env == 'dev' ? const DebugArea() : Container(),
+              const SocketWidget(),
+              env == 'dev' ? SendArea() : Container(),
+              const JsonResponseDisplay(),
             ],
           ),
-          //bottomNavigationBar: buildBottomNavigationBar(),
         ),
       )
     );

@@ -80,8 +80,15 @@ class FleetManageState extends State<FleetManagePage> {
                   _selectDate(context);
                 },
               ),
+              IconButton(
+                icon: const Icon(Icons.logout),
+                onPressed: () {
+                  // Logout 処理をここに追加
+                },
+              ),
             ],
           ),
+
           body: Column(
             children: [
               env == 'linux' ? const SocketWidget() : Container(),

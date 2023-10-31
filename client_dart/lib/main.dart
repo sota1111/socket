@@ -10,29 +10,80 @@ import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // LogManager インスタンスを作成してログファイルを初期化
   final logManager = LogManager();
   await logManager.initLogFile();
-
-  // LogManager インスタンスを SocketCom にセット
   SocketCom.instance.logManager = logManager;
+
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    MaterialApp(
+      home: ProviderScope(
+        child: Builder(
+          builder: (context) => const PlotDataPage(),
+        ),
+      ),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+
+class PlotDataPage extends StatefulWidget {
+  const PlotDataPage({super.key});
+
+  @override
+  PlotDataState createState() => PlotDataState();
+}
+
+class PlotDataState extends State<PlotDataPage> {
+  DateTime? selectedDate;
+  String? formattedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedDate = DateTime.now();
+    formattedDate = formatDate(selectedDate!);
+  }
+
+  String formatDate(DateTime date) {
+    return "${date.year}-${date.month.toString()}-${date.day.toString()}";
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = DateTime(picked.year, picked.month, picked.day);
+        formattedDate = formatDate(selectedDate!);
+        //debugPrint(formattedDate);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    //double width = MediaQuery.of(context).size.width;
     return MaterialApp(
       home: ProviderScope(
         child: Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(title: const Text('Socket Send App')),
+          appBar: AppBar(
+            title: const Text("表示"),
+            backgroundColor: Colors.black,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.calendar_today),
+                onPressed: () {
+                  _selectDate(context);
+                },
+              ),
+            ],
+          ),
           body: Column(
             children: [
               env == 'linux' ? const SocketWidget() : Container(),

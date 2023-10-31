@@ -63,6 +63,14 @@ class FleetManageState extends State<FleetManagePage> {
     }
   }
 
+  final drawerHeader = const UserAccountsDrawerHeader(
+    accountName: Text("user name"),
+    accountEmail: Text("user@email.com"),
+    currentAccountPicture: CircleAvatar(
+      child: FlutterLogo(size: 42.0),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     //double width = MediaQuery.of(context).size.width;
@@ -71,7 +79,7 @@ class FleetManageState extends State<FleetManagePage> {
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: const Text("表示"),
+            title: const Text("Robot予約"),
             backgroundColor: Colors.black,
             actions: [
               IconButton(
@@ -83,12 +91,32 @@ class FleetManageState extends State<FleetManagePage> {
               IconButton(
                 icon: const Icon(Icons.logout),
                 onPressed: () {
-                  // Logout 処理をここに追加
                 },
               ),
             ],
           ),
-
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                drawerHeader,
+                ListTile(
+                  title: const Text('項目1'),
+                  leading: const Icon(Icons.comment),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('項目2'),
+                  leading: const Icon(Icons.comment),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
           body: Column(
             children: [
               env == 'linux' ? const SocketWidget() : Container(),

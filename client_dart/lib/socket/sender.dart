@@ -26,15 +26,21 @@ class SendArea extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
-                controller: keyController0,
-                decoration: InputDecoration(labelText: "key0"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: keyController0,
+                  decoration: InputDecoration(labelText: "key0"),
+                ),
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: valueController0,
-                decoration: InputDecoration(labelText: "value0"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: valueController0,
+                  decoration: InputDecoration(labelText: "value0"),
+                ),
               ),
             ),
           ],
@@ -42,15 +48,21 @@ class SendArea extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
-                controller: keyController1,
-                decoration: InputDecoration(labelText: "key1"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: keyController1,
+                  decoration: InputDecoration(labelText: "key1"),
+                ),
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: valueController1,
-                decoration: InputDecoration(labelText: "value1"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: valueController1,
+                  decoration: InputDecoration(labelText: "value1"),
+                ),
               ),
             ),
           ],
@@ -58,15 +70,21 @@ class SendArea extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
-                controller: keyController2,
-                decoration: InputDecoration(labelText: "key2"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: keyController2,
+                  decoration: InputDecoration(labelText: "key2"),
+                ),
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: valueController2,
-                decoration: InputDecoration(labelText: "value2"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: valueController2,
+                  decoration: InputDecoration(labelText: "value2"),
+                ),
               ),
             ),
           ],
@@ -74,19 +92,26 @@ class SendArea extends ConsumerWidget {
         Row(
           children: [
             Expanded(
-              child: TextField(
-                controller: keyController3,
-                decoration: InputDecoration(labelText: "key3"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: keyController3,
+                  decoration: InputDecoration(labelText: "key3"),
+                ),
               ),
             ),
             Expanded(
-              child: TextField(
-                controller: valueController3,
-                decoration: InputDecoration(labelText: "value3"),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: valueController3,
+                  decoration: InputDecoration(labelText: "value3"),
+                ),
               ),
             ),
           ],
         ),
+        const SizedBox(height:10),
         ElevatedButton(
           onPressed: () {
             String statusKey = keyController0.text;

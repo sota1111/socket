@@ -23,7 +23,7 @@ class SocketConfig {
     this.connectionTimeout = 5000,
   });
 
-  String get address => (envSocket == 'dev') ? addressDev : addressProd;
+  String get address => (envSocket == 'true') ? addressDev : addressProd;
 }
 
 final socketConfig = SocketConfig(

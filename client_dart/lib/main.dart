@@ -18,23 +18,21 @@ void main() async {
     MaterialApp(
       home: ProviderScope(
         child: Builder(
-          builder: (context) => const PlotDataPage(),
+          builder: (context) => const FleetManagePage(),
         ),
       ),
     ),
   );
 }
 
-
-
-class PlotDataPage extends StatefulWidget {
-  const PlotDataPage({super.key});
+class FleetManagePage extends StatefulWidget {
+  const FleetManagePage({super.key});
 
   @override
-  PlotDataState createState() => PlotDataState();
+  FleetManageState createState() => FleetManageState();
 }
 
-class PlotDataState extends State<PlotDataPage> {
+class FleetManageState extends State<FleetManagePage> {
   DateTime? selectedDate;
   String? formattedDate;
 

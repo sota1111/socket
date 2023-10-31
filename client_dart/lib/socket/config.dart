@@ -1,9 +1,9 @@
 import '../config.dart';
 
 class SocketConfig {
-  final String envSocket;
-  final String addressDev;
-  final String addressProd;
+  final String env;
+  final String addressLinux;
+  final String addressAndroid;
   final int port;
   final int waitTimeBeforeConnecting;
   final int waitTimeAfterConnecting;
@@ -12,9 +12,9 @@ class SocketConfig {
   final int connectionTimeout;
 
   SocketConfig({
-    required this.envSocket,
-    this.addressDev = '127.0.0.1',
-    this.addressProd = '192.168.42.100',
+    required this.env,
+    this.addressLinux = '127.0.0.1',
+    this.addressAndroid = '192.168.42.100',
     this.port = 55001,
     this.waitTimeBeforeConnecting = 1000,
     this.waitTimeAfterConnecting = 5000,
@@ -23,9 +23,9 @@ class SocketConfig {
     this.connectionTimeout = 5000,
   });
 
-  String get address => (envSocket == 'true') ? addressDev : addressProd;
+  String get address => (env == 'linux') ? addressLinux : addressAndroid;
 }
 
 final socketConfig = SocketConfig(
-  envSocket: envSocket,
+  env: env,
 );

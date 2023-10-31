@@ -1,2 +1,2 @@
 // config.dart
-const envSocket = String.fromEnvironment('ENV_SOCKET', defaultValue: 'true');
+const env = String.fromEnvironment('ENV', defaultValue: 'linux');

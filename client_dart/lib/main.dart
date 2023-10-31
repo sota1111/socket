@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(title: const Text('Socket Send App')),
           body: Column(
             children: [
-              envSocket == 'true' ? const SocketWidget() : Container(),
-              envSocket == 'true' ? SendArea() : Container(),
-              envSocket == 'true' ? const ReceiveArea() : Container(),
+              env == 'linux' ? const SocketWidget() : Container(),
+              env == 'linux' ? SendArea() : Container(),
+              env == 'linux' ? const ReceiveArea() : Container(),
             ],
           ),
         ),

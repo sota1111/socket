@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'provider.dart';
 
-class JsonResponseDisplay extends ConsumerWidget {
-  const JsonResponseDisplay({super.key});
+class ReceiveArea extends ConsumerWidget {
+  const ReceiveArea({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

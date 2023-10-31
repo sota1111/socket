@@ -6,8 +6,7 @@ import 'socket/log.dart';
 
 import 'socket/sender.dart';
 import 'socket/receiver.dart';
-
-const env = String.fromEnvironment('ENV', defaultValue: 'dev');
+import 'config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,9 +35,9 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(title: const Text('Socket Send App')),
           body: Column(
             children: [
-              const SocketWidget(),
-              env == 'dev' ? SendArea() : Container(),
-              const JsonResponseDisplay(),
+              envSocket == 'true' ? const SocketWidget() : Container(),
+              envSocket == 'true' ? SendArea() : Container(),
+              envSocket == 'true' ? const ReceiveArea() : Container(),
             ],
           ),
         ),

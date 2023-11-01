@@ -69,13 +69,13 @@ class FleetManageState extends State<FleetManagePage> {
   Widget _getBottomItemWidget(int index) {
     switch(index) {
       case 0:
-        return Text('Input Page');
+        return const Text('Input Page');
       case 1:
         return _buildDataColumn();
       case 2:
-        return Text('Map Page');
+        return const Text('Map Page');
       default:
-        return Text('Error');
+        return const Text('Error');
     }
   }
 

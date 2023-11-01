@@ -6,6 +6,8 @@ import 'socket/log.dart';
 
 import 'socket/sender.dart';
 import 'socket/receiver.dart';
+import '../home/table.dart';
+import '../home/api.dart';
 import 'config.dart';
 
 void main() async {
@@ -66,7 +68,7 @@ class FleetManageState extends State<FleetManagePage> {
   Widget getDrawerItemWidget(String pos) {
     switch (pos) {
       case 'home':
-        return const Text('reservation');
+        return _buildDataColumn();
       case 'socket':
         return Column(
           children: [
@@ -78,6 +80,27 @@ class FleetManageState extends State<FleetManagePage> {
       default:
         return const Text('not implemented');
     }
+  }
+
+  Widget _buildDataColumn() {
+    return Column(
+      children: [
+        FutureBuilder<List<Map<String, dynamic>>>(
+          future: fetchDataFromLambda(formattedDate),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Container();  // Empty container
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return DataTablePage(
+                    data: snapshot.data!, formattedDate: formattedDate ?? '2023-10-1'
+              );
+            }
+          },
+        ),
+      ],
+    );
   }
 
 
@@ -93,7 +116,7 @@ class FleetManageState extends State<FleetManagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Robot予約"),
+        title: const Text("Robot Fleet System"),
         backgroundColor: Colors.black,
         actions: [
           IconButton(

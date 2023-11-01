@@ -13,6 +13,7 @@ import 'provider.dart';
 final socketComProvider = StateNotifierProvider<SocketCom, void>((ref) {
   return SocketCom.instance;
 });
+
 class SocketCom extends StateNotifier {
   Socket? socket;
   LogManager? logManager;

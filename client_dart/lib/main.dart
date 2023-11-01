@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'home/table.dart';
+import 'home/input.dart';
+import 'home/api.dart';
 import 'socket/com.dart';
 import 'socket/log.dart';
-
 import 'socket/sender.dart';
 import 'socket/receiver.dart';
-import '../home/table.dart';
-import '../home/input.dart';
-import '../home/api.dart';
+import 'init_place/init_place.dart';
 import 'config.dart';
 
 void main() async {
@@ -184,12 +183,12 @@ class FleetManageState extends State<FleetManagePage> {
             ),
             ListTile(
               title: const Text('set initial position'),
-              leading: const Icon(Icons.location_on),
+              leading: const Icon(Icons.refresh),
               onTap: () {
-                setState(() {
-                  _selectedDrawerIndex = 'position';
-                });
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => InitPlaceScreen()),
+                );
               },
             ),
             ListTile(

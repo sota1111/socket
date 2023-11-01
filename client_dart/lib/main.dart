@@ -35,7 +35,7 @@ class FleetManagePage extends StatefulWidget {
 class FleetManageState extends State<FleetManagePage> {
   DateTime? selectedDate;
   String? formattedDate;
-  int selectedDrawerIndex = 0;
+  String? selectedDrawerIndex = 'home';
 
   @override
   void initState() {
@@ -63,11 +63,11 @@ class FleetManageState extends State<FleetManagePage> {
     }
   }
 
-  Widget getDrawerItemWidget(int pos) {
+  Widget getDrawerItemWidget(String pos) {
     switch (pos) {
-      case 0:
+      case 'home':
         return const Text('reservation');
-      case 1:
+      case 'socket':
         return Column(
           children: [
             env == 'linux' ? SendArea() : const Text('This function is only use in linux'),
@@ -85,7 +85,7 @@ class FleetManageState extends State<FleetManagePage> {
     accountName: Text("user name"),
     accountEmail: Text("user@email.com"),
     currentAccountPicture: CircleAvatar(
-      child: FlutterLogo(size: 42.0),
+      child: FlutterLogo(size: 40.0),
     ),
   );
 
@@ -125,7 +125,7 @@ class FleetManageState extends State<FleetManagePage> {
               leading: const Icon(Icons.access_time),
               onTap: () {
                 setState(() {
-                  selectedDrawerIndex = 0;
+                  selectedDrawerIndex = 'home';
                 });
                 Navigator.pop(context);
               },
@@ -135,7 +135,7 @@ class FleetManageState extends State<FleetManagePage> {
               leading: const Icon(Icons.add_ic_call_outlined),
               onTap: () {
                 setState(() {
-                  selectedDrawerIndex = 1;
+                  selectedDrawerIndex = 'socket';
                 });
                 Navigator.pop(context);
               },
@@ -146,7 +146,7 @@ class FleetManageState extends State<FleetManagePage> {
       body: Column(
         children: [
           env == 'linux' ? const SocketWidget() : Container(),
-          getDrawerItemWidget(selectedDrawerIndex),
+          getDrawerItemWidget(selectedDrawerIndex!),
         ],
       ),
     );

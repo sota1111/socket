@@ -80,7 +80,7 @@ class FleetManageState extends State<FleetManagePage> {
   }
 
   Widget getSelectedWidget() {
-    if (_selectedDrawerIndex != null) {
+    if (_selectedDrawerIndex != 'home') {
       return _getDrawerItemWidget(_selectedDrawerIndex!);
     } else {
       return _getBottomItemWidget(_currentIndex);
@@ -91,6 +91,12 @@ class FleetManageState extends State<FleetManagePage> {
     switch (pos) {
       case 'home':
         return _buildDataColumn();
+      case 'mode':
+        return const Text('mode setting');
+      case 'position':
+        return const Text('position setting');
+      case 'map':
+        return const Text('map setting');
       case 'socket':
         return Column(
           children: [
@@ -98,7 +104,6 @@ class FleetManageState extends State<FleetManagePage> {
             env == 'linux' ? const ReceiveArea() : Container(),
           ],
         );
-
       default:
         return const Text('not implemented');
     }
@@ -167,8 +172,38 @@ class FleetManageState extends State<FleetManagePage> {
               },
             ),
             ListTile(
+              title: const Text('set mode'),
+              leading: const Icon(Icons.settings),
+              onTap: () {
+                setState(() {
+                  _selectedDrawerIndex = 'mode';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('set initial position'),
+              leading: const Icon(Icons.location_on),
+              onTap: () {
+                setState(() {
+                  _selectedDrawerIndex = 'position';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('renew map'),
+              leading: const Icon(Icons.refresh),
+              onTap: () {
+                setState(() {
+                  _selectedDrawerIndex = 'map';
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: const Text('socket communication'),
-              leading: const Icon(Icons.add_ic_call_outlined),
+              leading: const Icon(Icons.wifi_tethering),
               onTap: () {
                 setState(() {
                   _selectedDrawerIndex = 'socket';
@@ -185,11 +220,11 @@ class FleetManageState extends State<FleetManagePage> {
           getSelectedWidget(),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: _selectedDrawerIndex == 'home'
+          ? BottomNavigationBar(
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
-            _selectedDrawerIndex = null;
           });
         },
         items: const <BottomNavigationBarItem>[
@@ -208,7 +243,8 @@ class FleetManageState extends State<FleetManagePage> {
         ],
         currentIndex: _currentIndex,
         selectedItemColor: Colors.amber[800],
-      ),
+      )
+          : null, // Return null to hide BottomNavigationBar
     );
   }
 }

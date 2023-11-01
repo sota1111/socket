@@ -127,7 +127,7 @@ class DataTablePageState extends State<DataTablePage> {
             ),
           ),
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: height * 0.8, maxWidth: width * 0.85),
+            constraints: BoxConstraints(maxHeight: height-200, maxWidth: width * 0.85),
             child: Stack(
               children: [
                 SingleChildScrollView(

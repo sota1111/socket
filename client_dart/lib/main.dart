@@ -37,7 +37,8 @@ class FleetManagePage extends StatefulWidget {
 class FleetManageState extends State<FleetManagePage> {
   DateTime? selectedDate;
   String? formattedDate;
-  String? selectedDrawerIndex = 'home';
+  int _currentIndex = 0;
+  String? _selectedDrawerIndex = 'home';
 
   @override
   void initState() {
@@ -65,7 +66,28 @@ class FleetManageState extends State<FleetManagePage> {
     }
   }
 
-  Widget getDrawerItemWidget(String pos) {
+  Widget _getBottomItemWidget(int index) {
+    switch(index) {
+      case 0:
+        return Text('Input Page');
+      case 1:
+        return _buildDataColumn();
+      case 2:
+        return Text('Map Page');
+      default:
+        return Text('Error');
+    }
+  }
+
+  Widget getSelectedWidget() {
+    if (_selectedDrawerIndex != null) {
+      return _getDrawerItemWidget(_selectedDrawerIndex!);
+    } else {
+      return _getBottomItemWidget(_currentIndex);
+    }
+  }
+
+  Widget _getDrawerItemWidget(String pos) {
     switch (pos) {
       case 'home':
         return _buildDataColumn();
@@ -103,15 +125,6 @@ class FleetManageState extends State<FleetManagePage> {
     );
   }
 
-
-  final drawerHeader = const UserAccountsDrawerHeader(
-    accountName: Text("user name"),
-    accountEmail: Text("user@email.com"),
-    currentAccountPicture: CircleAvatar(
-      child: FlutterLogo(size: 40.0),
-    ),
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +161,7 @@ class FleetManageState extends State<FleetManagePage> {
               leading: const Icon(Icons.access_time),
               onTap: () {
                 setState(() {
-                  selectedDrawerIndex = 'home';
+                  _selectedDrawerIndex = 'home';
                 });
                 Navigator.pop(context);
               },
@@ -158,7 +171,7 @@ class FleetManageState extends State<FleetManagePage> {
               leading: const Icon(Icons.add_ic_call_outlined),
               onTap: () {
                 setState(() {
-                  selectedDrawerIndex = 'socket';
+                  _selectedDrawerIndex = 'socket';
                 });
                 Navigator.pop(context);
               },
@@ -169,8 +182,32 @@ class FleetManageState extends State<FleetManagePage> {
       body: Column(
         children: [
           env == 'linux' ? const SocketWidget() : Container(),
-          getDrawerItemWidget(selectedDrawerIndex!),
+          getSelectedWidget(),
         ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+            _selectedDrawerIndex = null;
+          });
+        },
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.input),
+            label: 'Input',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: 'Plan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+        ],
+        currentIndex: _currentIndex,
+        selectedItemColor: Colors.amber[800],
       ),
     );
   }

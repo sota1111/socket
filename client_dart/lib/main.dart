@@ -7,6 +7,7 @@ import 'socket/log.dart';
 import 'socket/sender.dart';
 import 'socket/receiver.dart';
 import '../home/table.dart';
+import '../home/input.dart';
 import '../home/api.dart';
 import 'config.dart';
 
@@ -69,7 +70,7 @@ class FleetManageState extends State<FleetManagePage> {
   Widget _getBottomItemWidget(int index) {
     switch(index) {
       case 0:
-        return const Text('Input Page');
+        return InputTablePage(formattedDate: formattedDate ?? '2023-10-1');
       case 1:
         return _buildDataColumn();
       case 2:
@@ -116,7 +117,7 @@ class FleetManageState extends State<FleetManagePage> {
           future: fetchDataFromLambda(formattedDate),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Container();  // Empty container
+              return Container();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
